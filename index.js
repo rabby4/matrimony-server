@@ -26,6 +26,7 @@ async function run() {
     // await client.connect();
 
     const userCollections = client.db('matrimonyDB').collection('users')
+    const favoritesCollections = client.db('matrimonyDB').collection('favorites')
 
     // post json web token
     app.post('/jwt', async(req, res)=>{
@@ -107,6 +108,13 @@ async function run() {
         admin = user?.role === 'admin'
       }
       res.send({admin})
+    })
+
+    app.post('/favorites', async(req, res)=>{
+      const favoriteUser = req.body
+      delete favoriteUser._id
+      const result = await favoritesCollections.insertOne(favoriteUser)
+      res.send(result)
     })
 
 
