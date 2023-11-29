@@ -172,6 +172,20 @@ async function run() {
       res.send(result)
     })
 
+    app.patch('/payment/:id', async(req, res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true };
+      const updateStatus = req.body;
+      const status = {
+        $set:{
+          status: updateStatus.status
+        }
+      }
+      const result = await paymentsCollections.updateOne(filter, status, options)
+      res.send(result)
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
