@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
+const strip = require('stripe')(process.env.STIPE_PAYMENT_KEY)
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -129,6 +130,20 @@ async function run() {
       const query = {_id: new ObjectId(id)}
       const result = await favoritesCollections.deleteOne(query)
       res.send(result)
+    })
+
+    // Payment intent
+    app.post('/create-payment-intent', async(req, res)=>{
+      const {price} = req.body;
+      const amount = parseInt(price * 100)
+      const paymentIntent = await strip.paymentIntents.create({
+        amount: amount,
+        currency: 'usd',
+        payment_method_types: ['card']
+      })
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      })
     })
 
 
