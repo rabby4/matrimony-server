@@ -111,6 +111,14 @@ async function run() {
       res.send(result)
     })
 
+    app.patch('/users/admin/:id', async(req, res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)}
+      const makeAdmin ={ $set: { role: 'admin' }}
+      const result = await userCollections.updateOne(filter, makeAdmin)
+      res.send(result)
+    })
+
     app.get('/users/admin/:email', async(req, res)=>{
       const email = req.params.email
       // if(email !== req.decoded.email){
