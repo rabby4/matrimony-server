@@ -67,7 +67,7 @@ async function run() {
       res.send(result)
     })
 
-    app.patch('/users/:id', async(req, res)=>{
+    app.put('/users/:id', async(req, res)=>{
         const id = req.params.id;
         const filter = {_id: new ObjectId(id)};
         const options = { upsert: true };
@@ -96,6 +96,19 @@ async function run() {
         }
         const result = await userCollections.updateOne(filter, user, options)
         res.send(result)
+    })
+
+    app.patch('/users/:id', async(req, res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId(id)}
+      const makePremium = req.body;
+      const premium = {
+         $set: { 
+          premium: makePremium.premium 
+        } 
+      }
+      const result = await userCollections.updateOne(filter, premium)
+      res.send(result)
     })
 
     app.get('/users/admin/:email', async(req, res)=>{
