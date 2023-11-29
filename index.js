@@ -28,6 +28,7 @@ async function run() {
 
     const userCollections = client.db('matrimonyDB').collection('users')
     const favoritesCollections = client.db('matrimonyDB').collection('favorites')
+    const paymentsCollections = client.db('matrimonyDB').collection('payments')
 
     // post json web token
     app.post('/jwt', async(req, res)=>{
@@ -144,6 +145,12 @@ async function run() {
       res.send({
         clientSecret: paymentIntent.client_secret,
       })
+    })
+
+    app.post('/payments', async(req, res)=>{
+      const payment = req.body;
+      const result = await paymentsCollections.insertOne(payment)
+      res.send(result)
     })
 
 
