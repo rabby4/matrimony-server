@@ -1,0 +1,21 @@
+// Whitelist of biodata fields a user may update via PUT /users/:id.
+export const updatableUserFields = [
+	"age",
+	"dof",
+	"email",
+	"fatherName",
+	"gender",
+	"height",
+	"motherName",
+	"name",
+	"occupation",
+	"partnerAge",
+	"partnerHeight",
+	"partnerWeight",
+	"permanentDivision",
+	"phone",
+	"photo",
+	"presentDivision",
+	"race",
+	"weight",
+] as const
